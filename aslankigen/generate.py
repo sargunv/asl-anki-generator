@@ -1,22 +1,24 @@
-import genanki
-import json
 import typing
 
-from .models import asl_card_model
+import genanki
+
 from .util import download_sign_video
 
 
 def generate_note(word: str) -> genanki.Note:
-    my_note = genanki.Note(model=genanki.BASIC_MODEL, fields=[word[0].upper() + word[1:], f"[sound:{word}.mp4]"])
+    my_note = genanki.Note(
+        model=genanki.BASIC_MODEL,
+        fields=[word[0].upper() + word[1:], f"[sound:{word}.mp4]"],
+    )
     return my_note
 
 
-"""
-Returns a generated deck based on the configuration in deck_config AND a list of strings indicaing the file names of videos
-"""
-
-
-def generate_deck(deck_config: any) -> typing.Tuple[genanki.Deck, typing.List[str], int]:
+def generate_deck(
+    deck_config: any,
+) -> typing.Tuple[genanki.Deck, typing.List[str], int]:
+    """
+    Returns a generated deck based on the configuration in deck_config AND a list of strings indicaing the file names of videos
+    """
     deck_name = deck_config["name"]
 
     my_deck = genanki.Deck(1725443770, deck_name)

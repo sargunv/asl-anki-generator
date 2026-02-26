@@ -7,7 +7,7 @@ local allSteps = new Mapping<String, Step> {
   ["pkl_format"] = Builtins.pkl_format
 
   // linters
-  // ["ruff"] = Builtins.ruff
+  ["ruff"] = Builtins.ruff
   // ["ty"] = Builtins.ty
   ["pkl"] = Builtins.pkl
 }

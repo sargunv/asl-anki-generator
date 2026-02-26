@@ -1,5 +1,6 @@
-import genanki
 import typing
+
+import genanki
 from pydantic import BaseModel
 
 asl_card_model = genanki.Model(

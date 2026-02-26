@@ -5,6 +5,7 @@ _.python.venv = { path = ".venv" }
 dprint = "0.51.1"
 hk = "1.36.0"
 pkl = "0.30.2"
+ruff = "0.15.2"
 ty = "0.0.18"
 uv = "0.10.6"
 
@@ -18,6 +19,14 @@ run = "python quick_run.py"
 [tasks.server]
 description = "Run the server"
 run = "uvicorn server:app --reload"
+
+[tasks.check]
+description = "Run lints and format checks"
+run = "hk check"
+
+[tasks.fix]
+description = "Fix lints and formatting"
+run = "hk fix"
 
 [tasks.test]
 description = "Run tests"

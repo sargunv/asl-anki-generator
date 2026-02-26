@@ -1,7 +1,9 @@
-import requests
 import logging
 import os
 import time
+
+import requests
+
 from . import DOWNLOAD_INTERVAL
 
 
@@ -10,14 +12,12 @@ def get_handspeak_url(word: str) -> str:
     return f"https://www.handspeak.com/word/{word[:1]}/{word[:3]}/{word}.mp4"
 
 
-"""
-Downloads video from HandSpeak as the answer for the sign
-
-Returns a string stating the relative path of the downloaded video
-"""
-
-
 def download_sign_video(word: str, force_redownload=False) -> str:
+    """
+    Downloads video from HandSpeak as the answer for the sign
+
+    Returns a string stating the relative path of the downloaded video
+    """
     filename = f"videos/{word}.mp4"
 
     if not force_redownload and os.path.isfile(filename):

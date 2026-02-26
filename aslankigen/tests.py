@@ -1,6 +1,5 @@
 import unittest
 from .util import get_handspeak_url
-from .generate import generate_deck
 
 
 class TestGetHandspeakUrl(unittest.TestCase):
