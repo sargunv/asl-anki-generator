@@ -285,6 +285,10 @@
             { "word": "over there", "path": "/word/t/the/there-l.mp4" },
             "here"
           ]
+        },
+        {
+          "tags": ["responses"],
+          "words": ["yes", "no", "please"]
         }
       ]
     }
