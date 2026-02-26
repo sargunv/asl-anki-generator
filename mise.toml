@@ -1,15 +1,14 @@
-[settings]
-python.uv_venv_auto = "create|source"
+[env]
+_.python.venv = { path = ".venv" }
 
 [tools]
-python = "{{ get_env(name='PYTHON_VERSION', default='3.13') }}"
 uv = "latest"
 
 [hooks]
 postinstall = "uv sync"
 
-[tasks.run]
-description = "Run the application"
+[tasks.generate]
+description = "Generate an Anki deck"
 run = "python quick_run.py"
 
 [tasks.server]
@@ -18,4 +17,4 @@ run = "uvicorn server:app --reload"
 
 [tasks.test]
 description = "Run tests"
-run = "uv run pytest"
+run = "pytest"

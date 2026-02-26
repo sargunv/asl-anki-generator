@@ -1,27 +1,43 @@
 # ASL Anki Flashcard Deck Generator
+
 Give it a list of words, it'll give you an Anki flashcard deck with the word as a question and a video of the sign as the answer. It'll even find the video for you!
 
 ## Usage
-1. First clone the repository and enter the folder:
+
+1. Clone the repository:
 ```bash
 git clone https://github.com/ji-mmyliu/asl-anki-generator.git
 cd asl-anki-generator
 ```
 
-2. Install all the Python dependencies using Pip (feel free to activate a virtual environment):
+2. Install dependencies (requires [uv](https://docs.astral.sh/uv/)):
 ```bash
-python3 -m pip install -r requirements.txt
+uv sync
 ```
 
-3. Clone `words.json.sample` into `words.json` and edit however you'd like.
+3. Copy `words.json.sample` to `words.json` and edit it with your word list.
 
-4. Generate the Anki deck using the following command:
+4. Generate the Anki deck:
 ```bash
-python3 main.py
+uv run python quick_run.py
 ```
 
-Enjoy! Feel free to [submit an issue](https://github.com/ji-mmyliu/asl-anki-generator/issues/new) for any concerns or inquiries.
+The generated `.apkg` file can be imported directly into Anki.
 
-#### Credits
-* Uses kerrickstaley's [genanki](https://github.com/kerrickstaley/genanki) python library
-* Uses the [handspeak](https://www.handspeak.com/) ASL dictionary for signs
+## Server
+
+You can also run the FastAPI server to generate decks via API:
+```bash
+uv run uvicorn server:app --reload
+```
+
+## Tests
+
+```bash
+uv run pytest
+```
+
+## Credits
+
+- Uses kerrickstaley's [genanki](https://github.com/kerrickstaley/genanki) Python library
+- Uses the [handspeak](https://www.handspeak.com/) ASL dictionary for signs
