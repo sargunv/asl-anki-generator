@@ -235,6 +235,58 @@
           ]
         }
       ]
+    },
+    {
+      "name": "Unit 2",
+      "sets": [
+        {
+          "tags": ["identities"],
+          "words": [
+            "teacher",
+            "student",
+            "deaf",
+            "hearing",
+            "teach",
+            "learn",
+            "identity"
+          ]
+        },
+        {
+          "tags": ["languages"],
+          "words": [
+            "english",
+            "spanish",
+            "french",
+            { "word": "asl", "path": "/word/a/asl/asl-fs.mp4" },
+            {
+              "word": "sign",
+              "path": "/word/s/sig/signing-savvy.mp4",
+              "hint": "as in signing"
+            },
+            "speak"
+          ]
+        },
+        {
+          "tags": ["school"],
+          "words": [
+            { "word": "high school", "path": "/word/h/hig/high-school.mp4" },
+            "college",
+            "gallaudet",
+            {
+              "word": "middle school",
+              "path": "/word/m/mid/middle-school.mp4"
+            },
+            {
+              "word": "elementary school",
+              "path": "/word/e/ele/elementary-school.mp4"
+            },
+            "kindergarten",
+            "class",
+            { "word": "over there", "path": "/word/t/the/there-l.mp4" },
+            "here"
+          ]
+        }
+      ]
     }
   ]
 }
