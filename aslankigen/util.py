@@ -8,7 +8,6 @@ from . import DOWNLOAD_INTERVAL
 
 
 def get_handspeak_url(word: str) -> str:
-    assert len(word) >= 3, "The length of the word must be at least 3 characters"
     return f"https://www.handspeak.com/word/{word[:1]}/{word[:3]}/{word}.mp4"
 
 
