@@ -83,12 +83,62 @@
           "words": [
             "nice",
             "meet",
-            "you",
             { "word": "how are you", "path": "/word/h/how/how-you.mp4" },
             {
               "word": "your name what",
               "path": "/lang/n/name/you-name-what.mp4"
             }
+          ]
+        },
+        {
+          "tags": ["wh-questions"],
+          "words": ["who", "what", "where", "why", "which"]
+        },
+        {
+          "tags": ["people"],
+          "words": ["people", "man", "woman", "boy", "girl"]
+        },
+        {
+          "tags": ["clothing"],
+          "words": [
+            {
+              "word": "shirt",
+              "path": "/word/s/shi/shirt.mp4",
+              "hint": "same as volunteer"
+            },
+            "pants",
+            {
+              "word": "coat",
+              "path": "/word/c/coa/coat.mp4",
+              "hint": "same as jacket"
+            },
+            "dress",
+            "skirt",
+            "shoes",
+            "boots",
+            "slippers",
+            "sandals",
+            "hat",
+            { "word": "glasses", "path": "/word/e/eye/eyeglasses.mp4" }
+          ]
+        },
+        {
+          "tags": ["colors"],
+          "words": [
+            "black",
+            { "word": "grey", "path": "/word/g/gra/gray-us.mp4" },
+            "white",
+            "pink",
+            "red",
+            "orange",
+            "yellow",
+            "green",
+            "blue",
+            "purple",
+            "brown",
+            "tan",
+            "gold",
+            "silver"
           ]
         }
       ]
