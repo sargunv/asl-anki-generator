@@ -50,6 +50,24 @@ class StatusBarColumn(ProgressColumn):
         return bar
 
 
+class StatusCountsColumn(ProgressColumn):
+    """Shows cached/downloaded/failed counts with matching colors."""
+
+    def render(self, task: Task) -> Text:
+        cached = task.fields.get("cached", 0)
+        downloaded = task.fields.get("downloaded", 0)
+        failed = task.fields.get("failed", 0)
+
+        parts = Text()
+        parts.append(f"{cached} cached", style=STYLE_CACHED)
+        parts.append(", ")
+        parts.append(f"{downloaded} downloaded", style=STYLE_DOWNLOADED)
+        if failed:
+            parts.append(", ")
+            parts.append(f"{failed} failed", style=STYLE_FAILED)
+        return parts
+
+
 def _deck_id(name: str) -> int:
     """Generate a stable deck ID from a deck name."""
     hash_bytes = hashlib.sha256(name.encode()).digest()
@@ -85,6 +103,7 @@ def generate_decks(
         StatusBarColumn(bar_width=40),
         MofNCompleteColumn(),
         TextColumn("{task.description}", style="dim"),
+        StatusCountsColumn(),
         console=console,
     ) as progress:
         task = progress.add_task(

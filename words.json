@@ -169,6 +169,35 @@
           ]
         },
         {
+          "tags": ["visual-features"],
+          "words": [
+            { "word": "old", "path": "/word/o/old/old-notnew.mp4" },
+            "young",
+            "tall",
+            {
+              "word": "short",
+              "path": "/word/s/sho/short-height.mp4",
+              "hint": "as in height"
+            },
+            "hair",
+            "mustache",
+            "beard"
+          ]
+        },
+        {
+          "tags": ["classroom"],
+          "words": [
+            "remember",
+            "forget",
+            "again",
+            "correct",
+            "wrong",
+            { "word": "copy me", "path": "/word/c/cop/copy-me.mp4" },
+            "homework",
+            "fingerspell"
+          ]
+        },
+        {
           "tags": ["actions"],
           "words": [
             "stand",

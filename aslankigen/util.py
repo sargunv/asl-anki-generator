@@ -42,7 +42,6 @@ def download_sign_video(
     filepath = f"videos/{filename}.mp4"
 
     if not force_redownload and os.path.isfile(filepath):
-        console.print(f"  [blue]Cached[/blue] {filepath}")
         return filepath, DownloadStatus.CACHED
 
     time.sleep(DOWNLOAD_INTERVAL)
