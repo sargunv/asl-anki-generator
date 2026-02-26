@@ -77,6 +77,19 @@
             "fifty",
             "hundred"
           ]
+        },
+        {
+          "tags": ["greetings"],
+          "words": [
+            "nice",
+            "meet",
+            "you",
+            { "word": "how are you", "path": "/word/h/how/how-you.mp4" },
+            {
+              "word": "your name what",
+              "path": "/lang/n/name/you-name-what.mp4"
+            }
+          ]
         }
       ]
     }

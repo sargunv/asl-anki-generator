@@ -13,6 +13,21 @@
       "title": "Group",
       "type": "object"
     },
+    "WordEntry": {
+      "description": "A word entry with an explicit HandSpeak path and optional hint.\n\nExample: {\"word\": \"how are you\", \"path\": \"/word/h/how/how-you.mp4\"}\nExample: {\"word\": \"your name what\", \"path\": \"/lang/n/name/you-name-what.mp4\"}",
+      "properties": {
+        "word": { "title": "Word", "type": "string" },
+        "path": { "title": "Path", "type": "string" },
+        "hint": {
+          "anyOf": [{ "type": "string" }, { "type": "null" }],
+          "default": null,
+          "title": "Hint"
+        }
+      },
+      "required": ["word", "path"],
+      "title": "WordEntry",
+      "type": "object"
+    },
     "WordSet": {
       "properties": {
         "tags": {
@@ -21,7 +36,9 @@
           "type": "array"
         },
         "words": {
-          "items": { "type": "string" },
+          "items": {
+            "anyOf": [{ "type": "string" }, { "$ref": "#/$defs/WordEntry" }]
+          },
           "title": "Words",
           "type": "array"
         }

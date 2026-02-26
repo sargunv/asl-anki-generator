@@ -2,7 +2,7 @@ import hashlib
 
 import genanki
 
-from .models import WordsConfig
+from .models import WordEntry, WordsConfig, resolve_word
 from .util import download_sign_video
 
 
@@ -12,10 +12,11 @@ def _deck_id(name: str) -> int:
     return int.from_bytes(hash_bytes[:4], "big")
 
 
-def generate_note(word: str, tags: list[str]) -> genanki.Note:
+def generate_note(entry: WordEntry, tags: list[str]) -> genanki.Note:
+    filename = entry.resolved_filename
     return genanki.Note(
         model=genanki.BASIC_MODEL,
-        fields=[word[0].upper() + word[1:], f"[sound:{word}.mp4]"],
+        fields=[entry.display_name, f"[sound:{filename}.mp4]"],
         tags=tags,
     )
 
@@ -35,13 +36,14 @@ def generate_decks(
         deck = genanki.Deck(_deck_id(deck_name), deck_name)
 
         for word_set in group.sets:
-            for word in word_set.words:
-                video_file = download_sign_video(word)
+            for raw_entry in word_set.words:
+                entry = resolve_word(raw_entry)
+                video_file = download_sign_video(entry.resolved_filename, entry.resolved_url)
                 if not video_file:
                     failures += 1
                     continue
 
-                deck.add_note(generate_note(word, word_set.tags))
+                deck.add_note(generate_note(entry, word_set.tags))
                 video_files.append(video_file)
 
         decks.append(deck)

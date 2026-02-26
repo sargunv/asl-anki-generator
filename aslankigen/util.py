@@ -7,37 +7,50 @@ import requests
 from . import DOWNLOAD_INTERVAL
 
 
-def get_handspeak_url(word: str) -> str:
+def get_handspeak_path(word: str) -> str:
+    """Build the HandSpeak URL path for a standard dictionary word.
+
+    This handles the two known URL patterns:
+    - Single letters: /word/{letter}/{letter}-abc.mp4
+    - Regular words: /word/{first_char}/{first_3_chars}/{word}.mp4
+    """
     if len(word) == 1 and word.isalpha():
-        # Single alphabet letters use a different URL pattern on HandSpeak
-        return f"https://www.handspeak.com/word/{word}/{word}-abc.mp4"
-    return f"https://www.handspeak.com/word/{word[:1]}/{word[:3]}/{word}.mp4"
+        return f"/word/{word}/{word}-abc.mp4"
+    return f"/word/{word[:1]}/{word[:3]}/{word}.mp4"
 
 
-def download_sign_video(word: str, force_redownload=False) -> str | None:
+def download_sign_video(
+    filename: str,
+    url: str,
+    force_redownload: bool = False,
+) -> str | None:
+    """Download a video from HandSpeak.
+
+    Args:
+        filename: The local filename (without extension), e.g. "hello" or "how-you".
+        url: The full URL to download from.
+        force_redownload: If True, re-download even if the file exists locally.
+
+    Returns the relative path of the downloaded video, or None on failure.
     """
-    Downloads video from HandSpeak as the answer for the sign
+    filepath = f"videos/{filename}.mp4"
 
-    Returns a string stating the relative path of the downloaded video
-    """
-    filename = f"videos/{word}.mp4"
+    if not force_redownload and os.path.isfile(filepath):
+        logging.info(f'Sign video "{filepath}" has been previously downloaded; skipping.')
+        return filepath
 
-    if not force_redownload and os.path.isfile(filename):
-        logging.info(f'Sign video "{filename}" has been previously downloaded; skipping.')
-        return filename  # Video is already downloaded
-
-    logging.info(f"Downloading {filename}...")
+    logging.info(f"Downloading {filepath}...")
     time.sleep(DOWNLOAD_INTERVAL)
 
     headers = {"User-Agent": "Mozilla/5.0"}
-    r = requests.get(get_handspeak_url(word), headers=headers, allow_redirects=True)
+    r = requests.get(url, headers=headers, allow_redirects=True)
 
     if not r.ok:
-        logging.warning(f'Error downloading sign video for "{word}". Please double-check the spelling of the word.')
-        return None  # Download unsuccessful
+        logging.warning(f'Error downloading sign video for "{filename}". Please double-check the URL.')
+        return None
 
-    logging.info(f'Successfully downloaded "{filename}"!')
+    logging.info(f'Successfully downloaded "{filepath}"!')
 
     os.makedirs("videos/", exist_ok=True)
-    open(filename, "wb").write(r.content)
-    return filename
+    open(filepath, "wb").write(r.content)
+    return filepath
