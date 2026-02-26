@@ -289,6 +289,18 @@
         {
           "tags": ["responses"],
           "words": ["yes", "no", "please"]
+        },
+        {
+          "tags": ["range"],
+          "words": [
+            { "word": "so-so", "path": "/word/s/so-so.mp4" },
+            "few",
+            "some",
+            "most",
+            "all",
+            "easy",
+            "hard"
+          ]
         }
       ]
     }
