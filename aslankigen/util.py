@@ -1,10 +1,16 @@
-import logging
+import enum
 import os
 import time
 
 import requests
 
-from . import DOWNLOAD_INTERVAL
+from . import DOWNLOAD_INTERVAL, console
+
+
+class DownloadStatus(enum.Enum):
+    CACHED = "cached"
+    DOWNLOADED = "downloaded"
+    FAILED = "failed"
 
 
 def get_handspeak_path(word: str) -> str:
@@ -23,7 +29,7 @@ def download_sign_video(
     filename: str,
     url: str,
     force_redownload: bool = False,
-) -> str | None:
+) -> tuple[str | None, DownloadStatus]:
     """Download a video from HandSpeak.
 
     Args:
@@ -31,26 +37,25 @@ def download_sign_video(
         url: The full URL to download from.
         force_redownload: If True, re-download even if the file exists locally.
 
-    Returns the relative path of the downloaded video, or None on failure.
+    Returns a (filepath, status) tuple. filepath is None on failure.
     """
     filepath = f"videos/{filename}.mp4"
 
     if not force_redownload and os.path.isfile(filepath):
-        logging.info(f'Sign video "{filepath}" has been previously downloaded; skipping.')
-        return filepath
+        console.print(f"  [blue]Cached[/blue] {filepath}")
+        return filepath, DownloadStatus.CACHED
 
-    logging.info(f"Downloading {filepath}...")
     time.sleep(DOWNLOAD_INTERVAL)
 
     headers = {"User-Agent": "Mozilla/5.0"}
     r = requests.get(url, headers=headers, allow_redirects=True)
 
     if not r.ok:
-        logging.warning(f'Error downloading sign video for "{filename}". Please double-check the URL.')
-        return None
-
-    logging.info(f'Successfully downloaded "{filepath}"!')
+        console.print(f"  [bold red]Failed[/bold red] {filename} [dim]({r.status_code})[/dim]")
+        return None, DownloadStatus.FAILED
 
     os.makedirs("videos/", exist_ok=True)
     open(filepath, "wb").write(r.content)
-    return filepath
+
+    console.print(f"  [green]Downloaded[/green] {filepath}")
+    return filepath, DownloadStatus.DOWNLOADED

@@ -1,8 +1,7 @@
-import logging
+from rich.console import Console
 
-logging.getLogger().setLevel(logging.INFO)
-
-logging.info("Initializing Application")
+# Shared console instance for all TUI output
+console = Console()
 
 # Number of seconds between downloads
 DOWNLOAD_INTERVAL = 3

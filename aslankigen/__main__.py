@@ -1,10 +1,11 @@
 """Generate an Anki ASL deck from words.json."""
 
 import json
-import logging
 
 import genanki
+from rich.table import Table
 
+from . import console
 from .generate import generate_decks
 from .models import WordsConfig
 
@@ -22,7 +23,18 @@ def main() -> None:
     my_package.write_to_file(config.export_filename)
 
     total_cards = sum(len(deck.notes) for deck in decks)
-    logging.info(f'Anki deck with {total_cards} cards across {len(decks)} sub-decks successfully exported to "{config.export_filename}"! {failures} failures were reported.')
+
+    table = Table(title="Export Summary", show_header=False, border_style="dim")
+    table.add_column(style="bold")
+    table.add_column()
+    table.add_row("Output", f"[cyan]{config.export_filename}[/cyan]")
+    table.add_row("Decks", str(len(decks)))
+    table.add_row("Cards", str(total_cards))
+    if failures:
+        table.add_row("Failures", f"[bold red]{failures}[/bold red]")
+    else:
+        table.add_row("Failures", "[green]0[/green]")
+    console.print(table)
 
 
 if __name__ == "__main__":

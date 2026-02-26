@@ -115,7 +115,7 @@
             "dress",
             "skirt",
             "shoes",
-            "boots",
+            { "word": "boots", "path": "/word/b/boo/boots-footwear.mp4" },
             "slippers",
             "sandals",
             "hat",
@@ -136,7 +136,7 @@
             "blue",
             "purple",
             "brown",
-            "tan",
+            { "word": "tan", "path": "/word/t/tan/tan-color.mp4" },
             "gold",
             "silver"
           ]
@@ -182,7 +182,7 @@
               "path": "/word/t/tea/tear-up.mp4",
               "hint": "as in rip"
             },
-            "crumple",
+            { "word": "crumple", "path": "/word/c/cru/crumple-paper.mp4" },
             "throw",
             "write",
             { "word": "look at", "path": "/word/l/loo/look-at.mp4" },
