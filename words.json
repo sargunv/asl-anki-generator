@@ -153,6 +153,22 @@
           ]
         },
         {
+          "tags": ["categories"],
+          "words": [
+            { "word": "same", "path": "/word/s/sam/same-as.mp4" },
+            "different",
+            "shape",
+            "name",
+            { "word": "numbers", "path": "/word/n/num/number.mp4" },
+            {
+              "word": "letters",
+              "path": "/word/l/let/letter-abc.mp4",
+              "hint": "as in alphabet"
+            },
+            { "word": "words", "path": "/word/w/wor/word.mp4" }
+          ]
+        },
+        {
           "tags": ["actions"],
           "words": [
             "stand",

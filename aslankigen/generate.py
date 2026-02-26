@@ -82,9 +82,9 @@ def generate_decks(
     console.print("[bold]Generating ASL Anki Deck[/bold]")
 
     with Progress(
-        TextColumn("[bold blue]{task.description}"),
         StatusBarColumn(bar_width=40),
         MofNCompleteColumn(),
+        TextColumn("{task.description}", style="dim"),
         console=console,
     ) as progress:
         task = progress.add_task(
