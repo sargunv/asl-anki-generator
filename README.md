@@ -19,7 +19,7 @@ cd asl-anki-generator
 uv sync
 ```
 
-3. Copy `words.sample.json` to `words.json` and edit it with your word list.
+3. Edit `words.json` with your word list.
 
 4. Generate the Anki deck:
 
