@@ -140,6 +140,54 @@
             "gold",
             "silver"
           ]
+        },
+        {
+          "tags": ["objects"],
+          "words": [
+            "door",
+            "window",
+            "light",
+            "book",
+            "paper",
+            "chair"
+          ]
+        },
+        {
+          "tags": ["actions"],
+          "words": [
+            "stand",
+            "jump",
+            "dance",
+            {
+              "word": "spin",
+              "path": "/word/s/spi/spinning-side.mp4",
+              "hint": "same as twirl"
+            },
+            { "word": "close door", "path": "/word/c/clo/close-door.mp4" },
+            {
+              "word": "open window",
+              "path": "/word/w/win/window-open.mp4"
+            },
+            {
+              "word": "turn on light",
+              "path": "/word/t/tur/turnon-light.mp4"
+            },
+            {
+              "word": "turn off light",
+              "path": "/word/t/tur/turnoff-light.mp4"
+            },
+            "read",
+            {
+              "word": "tear",
+              "path": "/word/t/tea/tear-up.mp4",
+              "hint": "as in rip"
+            },
+            "crumple",
+            "throw",
+            "write",
+            { "word": "look at", "path": "/word/l/loo/look-at.mp4" },
+            "sit"
+          ]
         }
       ]
     }
