@@ -16,10 +16,6 @@ postinstall = ["uv sync", "hk install --mise"]
 description = "Generate an Anki deck"
 run = "python quick_run.py"
 
-[tasks.server]
-description = "Run the server"
-run = "uvicorn server:app --reload"
-
 [tasks.check]
 description = "Run lints and format checks"
 run = "hk check"

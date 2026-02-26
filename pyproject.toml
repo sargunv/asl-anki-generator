@@ -4,11 +4,9 @@ version = "0.1.0"
 description = "Generate Anki flashcard decks for ASL vocabulary"
 requires-python = ">=3.13"
 dependencies = [
-  "fastapi",
   "genanki",
   "pydantic",
   "requests",
-  "uvicorn",
 ]
 
 [dependency-groups]

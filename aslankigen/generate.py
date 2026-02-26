@@ -1,44 +1,34 @@
-import typing
-
 import genanki
 
+from .models import WordsConfig
 from .util import download_sign_video
 
 
 def generate_note(word: str) -> genanki.Note:
-    my_note = genanki.Note(
+    return genanki.Note(
         model=genanki.BASIC_MODEL,
         fields=[word[0].upper() + word[1:], f"[sound:{word}.mp4]"],
     )
-    return my_note
 
 
 def generate_deck(
-    deck_config: typing.Any,
-) -> typing.Tuple[genanki.Deck, typing.List[str], int]:
+    config: WordsConfig,
+) -> tuple[genanki.Deck, list[str], int]:
     """
-    Returns a generated deck based on the configuration in deck_config AND a list of strings indicaing the file names of videos
+    Returns a generated deck, the list of video file paths, and the failure count.
     """
-    deck_name = deck_config["name"]
+    my_deck = genanki.Deck(1725443770, config.name)
 
-    my_deck = genanki.Deck(1725443770, deck_name)
-
-    video_files = []
+    video_files: list[str] = []
     failures = 0
 
-    for word in deck_config["words"]:
-        # Download answer sign video
+    for word in config.words:
         video_file = download_sign_video(word)
-
-        # Check if word exists
         if not video_file:
             failures += 1
             continue
 
-        # Generate Anki flashcard
         my_deck.add_note(generate_note(word))
-
-        # Add video file location to list
         video_files.append(video_file)
 
     return (my_deck, video_files, failures)

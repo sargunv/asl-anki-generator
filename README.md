@@ -29,14 +29,6 @@ uv run python quick_run.py
 
 The generated `.apkg` file can be imported directly into Anki.
 
-## Server
-
-You can also run the FastAPI server to generate decks via API:
-
-```bash
-uv run uvicorn server:app --reload
-```
-
 ## Tests
 
 ```bash
