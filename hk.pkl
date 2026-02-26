@@ -8,7 +8,7 @@ local allSteps = new Mapping<String, Step> {
 
   // linters
   ["ruff"] = Builtins.ruff
-  // ["ty"] = Builtins.ty
+  ["ty"] = Builtins.ty
   ["pkl"] = Builtins.pkl
 }
 

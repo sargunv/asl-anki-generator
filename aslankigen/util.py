@@ -12,7 +12,7 @@ def get_handspeak_url(word: str) -> str:
     return f"https://www.handspeak.com/word/{word[:1]}/{word[:3]}/{word}.mp4"
 
 
-def download_sign_video(word: str, force_redownload=False) -> str:
+def download_sign_video(word: str, force_redownload=False) -> str | None:
     """
     Downloads video from HandSpeak as the answer for the sign
 

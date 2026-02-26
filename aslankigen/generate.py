@@ -14,7 +14,7 @@ def generate_note(word: str) -> genanki.Note:
 
 
 def generate_deck(
-    deck_config: any,
+    deck_config: typing.Any,
 ) -> typing.Tuple[genanki.Deck, typing.List[str], int]:
     """
     Returns a generated deck based on the configuration in deck_config AND a list of strings indicaing the file names of videos

@@ -1,10 +1,10 @@
-from fastapi import Request
+import logging
+import os
+import time
+import uuid
 
 import genanki
-import logging
-import time
-import os
-import uuid
+from fastapi import Request
 
 from aslankigen.generate import generate_deck
 from aslankigen.models import WordsConfig
@@ -14,7 +14,7 @@ from . import app
 
 @app.post("/generate-deck")
 async def generate_asl_anki_package(deck_config: WordsConfig, request: Request):
-    my_deck, video_files = generate_deck(deck_config.dict())
+    my_deck, video_files, _ = generate_deck(deck_config.model_dump())
 
     my_package = genanki.Package(my_deck)
     my_package.media_files = video_files
