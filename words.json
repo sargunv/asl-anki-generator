@@ -87,7 +87,10 @@
             {
               "word": "your name what",
               "path": "/lang/n/name/you-name-what.mp4"
-            }
+            },
+            { "word": "fine", "path": "/word/f/fin/fine-good2.mp4" },
+            "tired",
+            "sick"
           ]
         },
         {
@@ -364,6 +367,35 @@
             {
               "word": "tie shoe",
               "path": "/word/t/tie/tie-knot.mp4"
+            },
+            { "word": "focus", "path": "/word/f/foc/focus-on.mp4" }
+          ]
+        },
+        {
+          "tags": ["preferences"],
+          "words": [
+            "detest",
+            { "word": "enjoy", "path": "/word/e/enj/enjoy2.mp4" },
+            {
+              "word": "favorite",
+              "path": "/word/f/fav/favorite-prefer.mp4"
+            }
+          ]
+        },
+        {
+          "tags": ["drinks"],
+          "words": [
+            "soda",
+            "coffee",
+            "tea",
+            "water",
+            {
+              "word": "orange juice",
+              "path": "/word/o/ora/orange-juice.mp4"
+            },
+            {
+              "word": "hot chocolate",
+              "path": "/word/h/hot/hot-chocolate.mp4"
             }
           ]
         }
