@@ -2,10 +2,14 @@
 _.python.venv = { path = ".venv" }
 
 [tools]
-uv = "latest"
+dprint = "0.51.1"
+hk = "1.36.0"
+pkl = "0.30.2"
+ty = "0.0.18"
+uv = "0.10.6"
 
 [hooks]
-postinstall = "uv sync"
+postinstall = ["uv sync", "hk install --mise"]
 
 [tasks.generate]
 description = "Generate an Anki deck"
@@ -18,3 +22,7 @@ run = "uvicorn server:app --reload"
 [tasks.test]
 description = "Run tests"
 run = "pytest"
+
+[settings]
+experimental = true
+pin = true

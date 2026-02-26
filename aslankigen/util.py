@@ -21,9 +21,7 @@ def download_sign_video(word: str, force_redownload=False) -> str:
     filename = f"videos/{word}.mp4"
 
     if not force_redownload and os.path.isfile(filename):
-        logging.info(
-            f'Sign video "{filename}" has been previously downloaded; skipping.'
-        )
+        logging.info(f'Sign video "{filename}" has been previously downloaded; skipping.')
         return filename  # Video is already downloaded
 
     logging.info(f"Downloading {filename}...")
@@ -33,9 +31,7 @@ def download_sign_video(word: str, force_redownload=False) -> str:
     r = requests.get(get_handspeak_url(word), headers=headers, allow_redirects=True)
 
     if not r.ok:
-        logging.warning(
-            f'Error downloading sign video for "{word}". Please double-check the spelling of the word.'
-        )
+        logging.warning(f'Error downloading sign video for "{word}". Please double-check the spelling of the word.')
         return None  # Download unsuccessful
 
     logging.info(f'Successfully downloaded "{filename}"!')

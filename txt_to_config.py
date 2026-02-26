@@ -6,10 +6,6 @@ import json
 
 words = [line.strip() for line in open("words.txt")]
 
-config = {
-    "name": "My ASL Deck",
-    "export_filename": "asl_vocabulary.apkg",
-    "words": words
-}
+config = {"name": "My ASL Deck", "export_filename": "asl_vocabulary.apkg", "words": words}
 
 json.dump(config, open("words.json", "w"))
