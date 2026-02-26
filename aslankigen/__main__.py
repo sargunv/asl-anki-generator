@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 import genanki
+from pydantic import ValidationError
 from rich.table import Table
 
 from . import console
@@ -18,7 +19,17 @@ def main() -> None:
         console.print(f"[bold red]Error:[/bold red] {WORD_LIST} not found.")
         raise SystemExit(1)
 
-    config = WordsConfig.model_validate(json.loads(WORD_LIST.read_text()))
+    try:
+        raw = json.loads(WORD_LIST.read_text())
+    except json.JSONDecodeError as exc:
+        console.print(f"[bold red]Error:[/bold red] Invalid JSON in {WORD_LIST}: {exc}")
+        raise SystemExit(1)
+
+    try:
+        config = WordsConfig.model_validate(raw)
+    except ValidationError as exc:
+        console.print(f"[bold red]Error:[/bold red] Invalid config in {WORD_LIST}:\n{exc}")
+        raise SystemExit(1)
 
     decks, video_files, failures = generate_decks(config)
 

@@ -32,13 +32,6 @@ class DownloadCounts:
             case DownloadStatus.FAILED:
                 self.failed += 1
 
-    def as_dict(self) -> dict[str, int]:
-        return {
-            "cached": self.cached,
-            "downloaded": self.downloaded,
-            "failed": self.failed,
-        }
-
 
 class StatusBarColumn(ProgressColumn):
     """A progress bar with colored segments for cached/downloaded/failed."""
@@ -62,7 +55,7 @@ class StatusBarColumn(ProgressColumn):
 
         # Proportional widths, but guarantee 1 char for any non-zero segment
         raw = [c / total * self.bar_width for c, _ in counts]
-        widths = [max(1, math.floor(r)) if c > 0 else 0 for r, (c, _) in zip(raw, counts)]
+        widths = [max(1, math.floor(r)) if c > 0 else 0 for r, (c, _) in zip(raw, counts, strict=True)]
         # Adjust largest segment so widths sum to exactly bar_width
         diff = self.bar_width - sum(widths)
         largest = max(range(len(counts)), key=lambda i: counts[i][0])
@@ -70,7 +63,7 @@ class StatusBarColumn(ProgressColumn):
         widths[largest] = max(1, widths[largest])
 
         bar = Text()
-        for w, (_, style) in zip(widths, counts):
+        for w, (_, style) in zip(widths, counts, strict=True):
             bar.append("█" * w, style=style)
         return bar
 

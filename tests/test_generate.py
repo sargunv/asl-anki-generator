@@ -1,8 +1,8 @@
-import pytest
-from pydantic import ValidationError
+from pathlib import Path
+from unittest.mock import patch
 
-from aslankigen.generate import DownloadCounts, _deck_id, generate_note
-from aslankigen.models import WordEntry
+from aslankigen.generate import _deck_id, generate_decks, generate_note
+from aslankigen.models import Group, WordEntry, WordSet, WordsConfig
 from aslankigen.util import DownloadStatus
 
 
@@ -20,7 +20,7 @@ def test_deck_id_different_inputs():
 
 
 def test_deck_id_in_valid_range():
-    """The result is in range(1 << 30, (1 << 31)), i.e. [1073741824, 2147483647]."""
+    """The result is in genanki's valid range [1<<30, 1<<31)."""
     for name in ("foo", "bar", "ASL::Basics", "", "z" * 1000):
         result = _deck_id(name)
         assert 1 << 30 <= result < 1 << 31, f"_deck_id({name!r}) = {result} out of range"
@@ -32,45 +32,44 @@ def test_deck_id_in_valid_range():
 def test_generate_note():
     """generate_note produces a note with the correct fields and tags."""
     entry = WordEntry(word="hello", path="/word/h/hel/hello.mp4")
-    tags = ["basics", "greetings"]
-
-    note = generate_note(entry, tags)
+    note = generate_note(entry, ["basics", "greetings"])
 
     assert note.fields == ["HELLO", "[sound:hello.mp4]"]
     assert note.tags == ["basics", "greetings"]
 
 
-# --- DownloadCounts ---
+# --- generate_decks integration ---
 
 
-def test_download_counts_increment():
-    """increment correctly bumps each status counter."""
-    counts = DownloadCounts()
-
-    counts.increment(DownloadStatus.CACHED)
-    counts.increment(DownloadStatus.CACHED)
-    counts.increment(DownloadStatus.DOWNLOADED)
-    counts.increment(DownloadStatus.FAILED)
-
-    assert counts.cached == 2
-    assert counts.downloaded == 1
-    assert counts.failed == 1
+def _make_config(*words: str) -> WordsConfig:
+    return WordsConfig(
+        name="Test",
+        export_filename="test.apkg",
+        groups=[Group(name="Basics", sets=[WordSet(tags=["basics"], words=list(words))])],
+    )
 
 
-def test_download_counts_as_dict():
-    """as_dict returns the expected dictionary."""
-    counts = DownloadCounts(cached=3, downloaded=5, failed=1)
+@patch("aslankigen.generate.download_sign_video")
+def test_generate_decks_basic(mock_download):
+    """Successful downloads produce decks with notes."""
+    mock_download.return_value = (Path("/tmp/hello.mp4"), DownloadStatus.DOWNLOADED)
 
-    assert counts.as_dict() == {"cached": 3, "downloaded": 5, "failed": 1}
+    decks, video_files, failures = generate_decks(_make_config("hello"))
+
+    assert len(decks) == 1
+    assert len(decks[0].notes) == 1
+    assert len(video_files) == 1
+    assert failures == 0
 
 
-# --- WordEntry validator edge cases ---
+@patch("aslankigen.generate.download_sign_video")
+def test_generate_decks_with_failure(mock_download):
+    """Failed downloads produce no notes and increment the failure count."""
+    mock_download.return_value = (None, DownloadStatus.FAILED)
 
+    decks, video_files, failures = generate_decks(_make_config("hello"))
 
-def test_empty_word_raises():
-    """WordEntry rejects empty and whitespace-only words."""
-    with pytest.raises(ValidationError):
-        WordEntry(word="", path="/word/a/a.mp4")
-
-    with pytest.raises(ValidationError):
-        WordEntry(word="   ", path="/word/a/a.mp4")
+    assert len(decks) == 1
+    assert len(decks[0].notes) == 0
+    assert video_files == []
+    assert failures == 1

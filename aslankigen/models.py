@@ -3,7 +3,7 @@ from pathlib import PurePosixPath
 from pydantic import BaseModel, field_validator
 
 
-def get_handspeak_path(word: str) -> str:
+def _get_handspeak_path(word: str) -> str:
     """Build the HandSpeak URL path for a standard dictionary word.
 
     This handles the two known URL patterns:
@@ -33,6 +33,15 @@ class WordEntry(BaseModel):
             raise ValueError("word must be a non-empty string")
         return v
 
+    @field_validator("path")
+    @classmethod
+    def path_must_be_valid(cls, v: str) -> str:
+        if not v.startswith("/"):
+            raise ValueError("path must be an absolute URL path starting with /")
+        if not v.endswith(".mp4"):
+            raise ValueError("path must end with .mp4")
+        return v
+
     @property
     def resolved_filename(self) -> str:
         """The local filename (without extension), derived from the path basename."""
@@ -55,7 +64,7 @@ class WordEntry(BaseModel):
 def resolve_word(entry: str | WordEntry) -> WordEntry:
     """Normalize a word list entry to a WordEntry."""
     if isinstance(entry, str):
-        return WordEntry(word=entry, path=get_handspeak_path(entry))
+        return WordEntry(word=entry, path=_get_handspeak_path(entry))
     return entry
 
 
