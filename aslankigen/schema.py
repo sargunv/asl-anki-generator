@@ -1,24 +1,16 @@
 """Generate words.schema.json from WordsConfig and optionally check if it's up to date."""
 
 import json
-import subprocess
 import sys
+from pathlib import Path
 
 from .models import WordsConfig
 
-SCHEMA_FILE = "words.schema.json"
+SCHEMA_FILE = Path("words.schema.json")
 
 
 def generate() -> str:
-    raw = json.dumps(WordsConfig.model_json_schema()) + "\n"
-    result = subprocess.run(
-        ["dprint", "fmt", "--stdin", SCHEMA_FILE],
-        input=raw,
-        capture_output=True,
-        text=True,
-        check=True,
-    )
-    return result.stdout
+    return json.dumps(WordsConfig.model_json_schema(), indent=2) + "\n"
 
 
 def main() -> None:
@@ -26,14 +18,15 @@ def main() -> None:
     expected = generate()
 
     if check:
-        with open(SCHEMA_FILE) as f:
-            actual = f.read()
+        if not SCHEMA_FILE.exists():
+            print(f"{SCHEMA_FILE} does not exist. Run: python -m aslankigen.schema")
+            sys.exit(1)
+        actual = SCHEMA_FILE.read_text()
         if actual != expected:
             print(f"{SCHEMA_FILE} is out of date. Run: python -m aslankigen.schema")
             sys.exit(1)
     else:
-        with open(SCHEMA_FILE, "w") as f:
-            f.write(expected)
+        SCHEMA_FILE.write_text(expected)
 
 
 if __name__ == "__main__":

@@ -1,6 +1,7 @@
 """Generate an Anki ASL deck from words.json."""
 
 import json
+from pathlib import Path
 
 import genanki
 from rich.table import Table
@@ -9,12 +10,15 @@ from . import console
 from .generate import generate_decks
 from .models import WordsConfig
 
-WORD_LIST = "words.json"
+WORD_LIST = Path("words.json")
 
 
 def main() -> None:
-    with open(WORD_LIST) as f:
-        config = WordsConfig.model_validate(json.load(f))
+    if not WORD_LIST.exists():
+        console.print(f"[bold red]Error:[/bold red] {WORD_LIST} not found.")
+        raise SystemExit(1)
+
+    config = WordsConfig.model_validate(json.loads(WORD_LIST.read_text()))
 
     decks, video_files, failures = generate_decks(config)
 

@@ -1,5 +1,6 @@
 import hashlib
 import math
+from dataclasses import dataclass
 
 import genanki
 from rich.progress import MofNCompleteColumn, Progress, ProgressColumn, Task, TextColumn
@@ -8,12 +9,35 @@ from rich.text import Text
 
 from . import console
 from .models import WordEntry, WordsConfig, resolve_word
-from .util import download_sign_video
+from .util import DownloadStatus, download_sign_video
 
 STYLE_CACHED = Style(color="blue")
 STYLE_DOWNLOADED = Style(color="green")
 STYLE_FAILED = Style(color="red")
 STYLE_REMAINING = Style(color="bright_black", dim=True)
+
+
+@dataclass
+class DownloadCounts:
+    cached: int = 0
+    downloaded: int = 0
+    failed: int = 0
+
+    def increment(self, status: DownloadStatus) -> None:
+        match status:
+            case DownloadStatus.CACHED:
+                self.cached += 1
+            case DownloadStatus.DOWNLOADED:
+                self.downloaded += 1
+            case DownloadStatus.FAILED:
+                self.failed += 1
+
+    def as_dict(self) -> dict[str, int]:
+        return {
+            "cached": self.cached,
+            "downloaded": self.downloaded,
+            "failed": self.failed,
+        }
 
 
 class StatusBarColumn(ProgressColumn):
@@ -43,6 +67,7 @@ class StatusBarColumn(ProgressColumn):
         diff = self.bar_width - sum(widths)
         largest = max(range(len(counts)), key=lambda i: counts[i][0])
         widths[largest] += diff
+        widths[largest] = max(1, widths[largest])
 
         bar = Text()
         for w, (_, style) in zip(widths, counts):
@@ -69,9 +94,10 @@ class StatusCountsColumn(ProgressColumn):
 
 
 def _deck_id(name: str) -> int:
-    """Generate a stable deck ID from a deck name."""
+    """Generate a stable deck ID from a deck name, constrained to genanki's valid range."""
     hash_bytes = hashlib.sha256(name.encode()).digest()
-    return int.from_bytes(hash_bytes[:4], "big")
+    raw = int.from_bytes(hash_bytes[:4], "big")
+    return (raw % (1 << 30)) + (1 << 30)
 
 
 def generate_note(entry: WordEntry, tags: list[str]) -> genanki.Note:
@@ -95,7 +121,7 @@ def generate_decks(
 
     total_words = sum(len(word_set.words) for group in config.groups for word_set in group.sets)
 
-    counts = {"cached": 0, "downloaded": 0, "failed": 0}
+    counts = DownloadCounts()
 
     console.print("[bold]Generating ASL Anki Deck[/bold]")
 
@@ -109,9 +135,9 @@ def generate_decks(
         task = progress.add_task(
             "Processing words",
             total=total_words,
-            cached=counts["cached"],
-            downloaded=counts["downloaded"],
-            failed=counts["failed"],
+            cached=counts.cached,
+            downloaded=counts.downloaded,
+            failed=counts.failed,
         )
 
         for group in config.groups:
@@ -127,15 +153,15 @@ def generate_decks(
                         failures += 1
                     else:
                         deck.add_note(generate_note(entry, word_set.tags))
-                        video_files.append(video_file)
+                        video_files.append(str(video_file))
 
-                    counts[status.value] += 1
+                    counts.increment(status)
                     progress.update(
                         task,
                         advance=1,
-                        cached=counts["cached"],
-                        downloaded=counts["downloaded"],
-                        failed=counts["failed"],
+                        cached=counts.cached,
+                        downloaded=counts.downloaded,
+                        failed=counts.failed,
                     )
 
             decks.append(deck)

@@ -2,62 +2,110 @@
   "$defs": {
     "Group": {
       "properties": {
-        "name": { "title": "Name", "type": "string" },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
         "sets": {
-          "items": { "$ref": "#/$defs/WordSet" },
+          "items": {
+            "$ref": "#/$defs/WordSet"
+          },
           "title": "Sets",
           "type": "array"
         }
       },
-      "required": ["name", "sets"],
+      "required": [
+        "name",
+        "sets"
+      ],
       "title": "Group",
       "type": "object"
     },
     "WordEntry": {
       "description": "A word entry with an explicit HandSpeak path and optional hint.\n\nExample: {\"word\": \"how are you\", \"path\": \"/word/h/how/how-you.mp4\"}\nExample: {\"word\": \"your name what\", \"path\": \"/lang/n/name/you-name-what.mp4\"}",
       "properties": {
-        "word": { "title": "Word", "type": "string" },
-        "path": { "title": "Path", "type": "string" },
+        "word": {
+          "title": "Word",
+          "type": "string"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
         "hint": {
-          "anyOf": [{ "type": "string" }, { "type": "null" }],
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
           "default": null,
           "title": "Hint"
         }
       },
-      "required": ["word", "path"],
+      "required": [
+        "word",
+        "path"
+      ],
       "title": "WordEntry",
       "type": "object"
     },
     "WordSet": {
       "properties": {
         "tags": {
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "title": "Tags",
           "type": "array"
         },
         "words": {
           "items": {
-            "anyOf": [{ "type": "string" }, { "$ref": "#/$defs/WordEntry" }]
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/WordEntry"
+              }
+            ]
           },
           "title": "Words",
           "type": "array"
         }
       },
-      "required": ["tags", "words"],
+      "required": [
+        "tags",
+        "words"
+      ],
       "title": "WordSet",
       "type": "object"
     }
   },
   "properties": {
-    "name": { "title": "Name", "type": "string" },
-    "export_filename": { "title": "Export Filename", "type": "string" },
+    "name": {
+      "title": "Name",
+      "type": "string"
+    },
+    "export_filename": {
+      "title": "Export Filename",
+      "type": "string"
+    },
     "groups": {
-      "items": { "$ref": "#/$defs/Group" },
+      "items": {
+        "$ref": "#/$defs/Group"
+      },
       "title": "Groups",
       "type": "array"
     }
   },
-  "required": ["name", "export_filename", "groups"],
+  "required": [
+    "name",
+    "export_filename",
+    "groups"
+  ],
   "title": "WordsConfig",
   "type": "object"
 }

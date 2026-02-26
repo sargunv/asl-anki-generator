@@ -1,6 +1,18 @@
-from posixpath import basename, splitext
+from pathlib import PurePosixPath
 
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
+
+
+def get_handspeak_path(word: str) -> str:
+    """Build the HandSpeak URL path for a standard dictionary word.
+
+    This handles the two known URL patterns:
+    - Single letters: /word/{letter}/{letter}-abc.mp4
+    - Regular words: /word/{first_char}/{first_3_chars}/{word}.mp4
+    """
+    if len(word) == 1 and word.isalpha():
+        return f"/word/{word}/{word}-abc.mp4"
+    return f"/word/{word[:1]}/{word[:3]}/{word}.mp4"
 
 
 class WordEntry(BaseModel):
@@ -14,10 +26,17 @@ class WordEntry(BaseModel):
     path: str
     hint: str | None = None
 
+    @field_validator("word")
+    @classmethod
+    def word_must_be_non_empty(cls, v: str) -> str:
+        if not v.strip():
+            raise ValueError("word must be a non-empty string")
+        return v
+
     @property
     def resolved_filename(self) -> str:
         """The local filename (without extension), derived from the path basename."""
-        return splitext(basename(self.path))[0]
+        return PurePosixPath(self.path).stem
 
     @property
     def resolved_url(self) -> str:
@@ -26,8 +45,8 @@ class WordEntry(BaseModel):
 
     @property
     def display_name(self) -> str:
-        """The text to show on the card front."""
-        name = self.word[0].upper() + self.word[1:]
+        """The text to show on the card front, in ASL gloss convention (ALL CAPS)."""
+        name = self.word.upper()
         if self.hint:
             return f"{name} ({self.hint})"
         return name
@@ -36,8 +55,6 @@ class WordEntry(BaseModel):
 def resolve_word(entry: str | WordEntry) -> WordEntry:
     """Normalize a word list entry to a WordEntry."""
     if isinstance(entry, str):
-        from .util import get_handspeak_path
-
         return WordEntry(word=entry, path=get_handspeak_path(entry))
     return entry
 
