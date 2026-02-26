@@ -10,6 +10,18 @@ local allSteps = new Mapping<String, Step> {
   ["ruff"] = Builtins.ruff
   ["ty"] = Builtins.ty
   ["pkl"] = Builtins.pkl
+
+  // schema
+  ["schema_gen"] {
+    glob = "aslankigen/models.py"
+    check = "python -m aslankigen.schema --check"
+    fix = "python -m aslankigen.schema"
+  }
+  ["jvl"] {
+    depends = List("schema_gen")
+    glob = "words.json"
+    check = "jvl check --strict {{files}}"
+  }
 }
 
 hooks {

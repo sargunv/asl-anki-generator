@@ -1,0 +1,14 @@
+{
+  "properties": {
+    "name": { "title": "Name", "type": "string" },
+    "export_filename": { "title": "Export Filename", "type": "string" },
+    "words": {
+      "items": { "type": "string" },
+      "title": "Words",
+      "type": "array"
+    }
+  },
+  "required": ["name", "export_filename", "words"],
+  "title": "WordsConfig",
+  "type": "object"
+}
