@@ -95,7 +95,14 @@
         },
         {
           "tags": ["wh-questions"],
-          "words": ["who", "what", "where", "why", "which"]
+          "words": [
+            "who",
+            "what",
+            "where",
+            "why",
+            "which",
+            { "word": "how many", "path": "/word/h/how/how-many.mp4" }
+          ]
         },
         {
           "tags": ["people"],
@@ -302,7 +309,8 @@
             "most",
             "all",
             "easy",
-            "hard"
+            "hard",
+            "have"
           ]
         },
         {
