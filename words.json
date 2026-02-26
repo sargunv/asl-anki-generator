@@ -301,6 +301,71 @@
             "easy",
             "hard"
           ]
+        },
+        {
+          "tags": ["time"],
+          "words": [
+            { "word": "grew up", "path": "/word/g/gro/growup-raise.mp4" },
+            "day",
+            "year",
+            "now"
+          ]
+        },
+        {
+          "tags": ["activities"],
+          "words": [
+            {
+              "word": "work out",
+              "path": "/word/w/wor/workout-exercise.mp4"
+            },
+            { "word": "bike", "path": "/word/b/bic/bicycle.mp4" },
+            { "word": "run", "path": "/word/r/run/run-jog.mp4" },
+            "walk",
+            "dance",
+            { "word": "bowling", "path": "/word/b/bow/bowling-game.mp4" },
+            "play",
+            { "word": "dog", "path": "/word/d/dog/dog-fs.mp4" },
+            "cook",
+            { "word": "chat", "path": "/word/c/cha/chat-conversation.mp4" },
+            "sew",
+            "knit",
+            {
+              "word": "watch tv",
+              "path": "/word/w/wat/watch-screen.mp4"
+            },
+            "movie",
+            "photography",
+            {
+              "word": "paint",
+              "path": "/word/p/pai/paint-art.mp4",
+              "hint": "as in painting a picture"
+            },
+            "buy",
+            "travel",
+            { "word": "camping", "path": "/word/c/cam/camping2.mp4" },
+            "fishing",
+            "game",
+            { "word": "video game", "path": "/word/v/vid/video-game.mp4" },
+            { "word": "action", "path": "/word/a/act/action-act.mp4" },
+            {
+              "word": "type",
+              "path": "/word/t/typ/type-keyboard.mp4",
+              "hint": "as in typing"
+            },
+            {
+              "word": "use computer",
+              "path": "/word/c/com/computer-arm.mp4"
+            },
+            "sleep",
+            "music",
+            "listen",
+            { "word": "candy", "path": "/word/c/can/candy-usa.mp4" },
+            "eat",
+            {
+              "word": "tie shoe",
+              "path": "/word/t/tie/tie-knot.mp4"
+            }
+          ]
         }
       ]
     }
