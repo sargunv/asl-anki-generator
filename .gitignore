@@ -2,7 +2,6 @@ words.json
 words.txt
 asl_vocabulary.apkg
 videos/
-venv/
-app/__pycache__
-__pycache__
+.venv/
+__pycache__/
 exports/
