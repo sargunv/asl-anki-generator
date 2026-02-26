@@ -15,7 +15,7 @@ postinstall = ["uv sync", "hk install --mise"]
 
 [tasks.generate]
 description = "Generate an Anki deck"
-run = "python quick_run.py"
+run = "asl-anki-generator"
 
 [tasks.check]
 description = "Run lints and format checks"

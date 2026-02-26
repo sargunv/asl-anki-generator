@@ -24,7 +24,7 @@ uv sync
 4. Generate the Anki deck:
 
 ```bash
-uv run python quick_run.py
+uv run asl-anki-generator
 ```
 
 The generated `.apkg` file can be imported directly into Anki.
