@@ -1,34 +1,49 @@
+import hashlib
+
 import genanki
 
 from .models import WordsConfig
 from .util import download_sign_video
 
 
-def generate_note(word: str) -> genanki.Note:
+def _deck_id(name: str) -> int:
+    """Generate a stable deck ID from a deck name."""
+    hash_bytes = hashlib.sha256(name.encode()).digest()
+    return int.from_bytes(hash_bytes[:4], "big")
+
+
+def generate_note(word: str, tags: list[str]) -> genanki.Note:
     return genanki.Note(
         model=genanki.BASIC_MODEL,
         fields=[word[0].upper() + word[1:], f"[sound:{word}.mp4]"],
+        tags=tags,
     )
 
 
-def generate_deck(
+def generate_decks(
     config: WordsConfig,
-) -> tuple[genanki.Deck, list[str], int]:
+) -> tuple[list[genanki.Deck], list[str], int]:
     """
-    Returns a generated deck, the list of video file paths, and the failure count.
+    Returns the generated decks, the list of video file paths, and the failure count.
     """
-    my_deck = genanki.Deck(1725443770, config.name)
-
+    decks: list[genanki.Deck] = []
     video_files: list[str] = []
     failures = 0
 
-    for word in config.words:
-        video_file = download_sign_video(word)
-        if not video_file:
-            failures += 1
-            continue
+    for group in config.groups:
+        deck_name = f"{config.name}::{group.name}"
+        deck = genanki.Deck(_deck_id(deck_name), deck_name)
 
-        my_deck.add_note(generate_note(word))
-        video_files.append(video_file)
+        for word_set in group.sets:
+            for word in word_set.words:
+                video_file = download_sign_video(word)
+                if not video_file:
+                    failures += 1
+                    continue
 
-    return (my_deck, video_files, failures)
+                deck.add_note(generate_note(word, word_set.tags))
+                video_files.append(video_file)
+
+        decks.append(deck)
+
+    return (decks, video_files, failures)

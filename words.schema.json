@@ -1,14 +1,46 @@
 {
+  "$defs": {
+    "Group": {
+      "properties": {
+        "name": { "title": "Name", "type": "string" },
+        "sets": {
+          "items": { "$ref": "#/$defs/WordSet" },
+          "title": "Sets",
+          "type": "array"
+        }
+      },
+      "required": ["name", "sets"],
+      "title": "Group",
+      "type": "object"
+    },
+    "WordSet": {
+      "properties": {
+        "tags": {
+          "items": { "type": "string" },
+          "title": "Tags",
+          "type": "array"
+        },
+        "words": {
+          "items": { "type": "string" },
+          "title": "Words",
+          "type": "array"
+        }
+      },
+      "required": ["tags", "words"],
+      "title": "WordSet",
+      "type": "object"
+    }
+  },
   "properties": {
     "name": { "title": "Name", "type": "string" },
     "export_filename": { "title": "Export Filename", "type": "string" },
-    "words": {
-      "items": { "type": "string" },
-      "title": "Words",
+    "groups": {
+      "items": { "$ref": "#/$defs/Group" },
+      "title": "Groups",
       "type": "array"
     }
   },
-  "required": ["name", "export_filename", "words"],
+  "required": ["name", "export_filename", "groups"],
   "title": "WordsConfig",
   "type": "object"
 }

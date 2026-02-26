@@ -5,7 +5,7 @@ import logging
 
 import genanki
 
-from .generate import generate_deck
+from .generate import generate_decks
 from .models import WordsConfig
 
 WORD_LIST = "words.json"
@@ -15,13 +15,14 @@ def main() -> None:
     with open(WORD_LIST) as f:
         config = WordsConfig.model_validate(json.load(f))
 
-    my_deck, video_files, failures = generate_deck(config)
+    decks, video_files, failures = generate_decks(config)
 
-    my_package = genanki.Package(my_deck)
+    my_package = genanki.Package(decks)
     my_package.media_files = video_files
     my_package.write_to_file(config.export_filename)
 
-    logging.info(f'Anki deck with {len(video_files)} cards successfully exported to "{config.export_filename}"! {failures} failures were reported.')
+    total_cards = sum(len(deck.notes) for deck in decks)
+    logging.info(f'Anki deck with {total_cards} cards across {len(decks)} sub-decks successfully exported to "{config.export_filename}"! {failures} failures were reported.')
 
 
 if __name__ == "__main__":

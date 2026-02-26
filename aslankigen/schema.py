@@ -12,7 +12,7 @@ SCHEMA_FILE = "words.schema.json"
 def generate() -> str:
     raw = json.dumps(WordsConfig.model_json_schema()) + "\n"
     result = subprocess.run(
-        ["dprint", "fmt", "--stdin-file-path", SCHEMA_FILE],
+        ["dprint", "fmt", "--stdin", SCHEMA_FILE],
         input=raw,
         capture_output=True,
         text=True,
