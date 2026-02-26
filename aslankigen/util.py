@@ -8,6 +8,9 @@ from . import DOWNLOAD_INTERVAL
 
 
 def get_handspeak_url(word: str) -> str:
+    if len(word) == 1 and word.isalpha():
+        # Single alphabet letters use a different URL pattern on HandSpeak
+        return f"https://www.handspeak.com/word/{word}/{word}-abc.mp4"
     return f"https://www.handspeak.com/word/{word[:1]}/{word[:3]}/{word}.mp4"
 
 

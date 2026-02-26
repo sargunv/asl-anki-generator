@@ -1,7 +1,7 @@
 {
   "lineWidth": 80,
   "markdown": { "textWrap": "always" },
-  "excludes": ["**/*-lock.json"],
+  "excludes": ["**/*-lock.json", "words.schema.json"],
   "plugins": [
     "https://plugins.dprint.dev/json-0.21.1.wasm",
     "https://plugins.dprint.dev/markdown-0.21.1.wasm",
